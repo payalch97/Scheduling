@@ -9,6 +9,7 @@ int burstTime[200];
 int waitingTime[200];
 int turnAround[200];
 int queue[200];
+int remainingBurstTime[200];
 
 void maintainingQueueAT();
 
@@ -59,6 +60,33 @@ void main()
             turnAround[x] = time;
         }
     }
+
+    printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n");
+    for(i=0;i<no_of_process;i++)
+    {
+        printf("P[%d]\t|\t%d\t%d\n",i,turnAround[i]-arrivalTime[i],waitingTime[i]);
+    }
+
+    timeQuantum = 9;
+    for(i=0;i<no_of_process;i++)
+    {
+        int x = queue[i];
+        if(remainingBurstTime[x]!=0)
+        {
+            waitingTime[x] += time - turnAround[x];
+            if(remainingBurstTime[x]<timeQuantum)
+            {
+                time += remainingBurstTime[x];
+                remainingBurstTime[x]=0;
+            }
+            else
+            {
+                time +=timeQuantum;
+                remainingBurstTime[x] -= timeQuantum;
+            }
+            turnAround[x] = time;
+        }
+    }
     printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n");
     for(i=0;i<no_of_process;i++)
     {
@@ -88,3 +116,5 @@ void maintainingQueueAT()
         copyArray[min] = MAX_VALUE;
     }
 }
+
+
