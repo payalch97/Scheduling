@@ -1,4 +1,5 @@
 #include<stdio.h>
+#define MAX_VALUE 1000000000;
 
 int i,j,k,x;
 int time;
@@ -11,6 +12,7 @@ int turnAround[200];
 int queue[200];
 int remainingBurstTime[200];
 
+void maintainingQueueRT();
 void maintainingQueueAT();
 
 void main()
@@ -92,6 +94,29 @@ void main()
     {
         printf("P[%d]\t|\t%d\t%d\n",i,turnAround[i]-arrivalTime[i],waitingTime[i]);
     }
+
+    maintainingQueueRT();
+
+    for(i=0;i<no_of_process;i++)
+    {
+        k = queue[i];
+
+        if(remainingBurstTime[k] != 0)
+        {
+            printf("%d %d\n",k,time);
+            waitingTime[k] += time - turnAround[k];
+            time += remainingBurstTime[k];
+            remainingBurstTime[k]=0;
+            turnAround[k] = time;
+        }
+    }
+
+    printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n");
+    for(i=0;i<no_of_process;i++)
+    {
+        printf("P[%d]\t|\t%d\t|\t%d\n",i,turnAround[i]-arrivalTime[i],waitingTime[i]);
+    }
+
 }
 
 void maintainingQueueAT()
@@ -116,5 +141,23 @@ void maintainingQueueAT()
         copyArray[min] = MAX_VALUE;
     }
 }
+void maintainingQueueRT()
+{
+    int copyArray[no_of_process];
+    for(i=0;i<no_of_process;i++)
+        copyArray[i]=remainingBurstTime[i];
 
-
+    int max,k;
+    k=0;
+    for(i=0;i<no_of_process;i++)
+    {
+        max = 0;
+        for(j=0;j<no_of_process;j++)
+        {
+            if(copyArray[j]>copyArray[max])
+                max = j;
+        }
+        queue[k++]=max;
+        copyArray[max] = -1;
+    }
+}
