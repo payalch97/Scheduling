@@ -23,6 +23,7 @@ void main()
     printf("Enter Burst Time of each Process \n");
     for(i=0;i<no_of_process;i++)
     {
+        printf("Process %d : ",i);
         scanf("%d",&burstTime[i]);
         remainingBurstTime[i] = burstTime[i];
         waitingTime[i]=0;
@@ -32,6 +33,7 @@ void main()
     printf("Enter Arrival Time of each Process \n");
     for(i=0;i<no_of_process;i++)
     {
+        printf("Process %d : ",i);
         scanf("%d",&arrivalTime[i]);
     }
 
@@ -63,13 +65,7 @@ void main()
         }
     }
 
-    printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n");
-    for(i=0;i<no_of_process;i++)
-    {
-        printf("P[%d]\t|\t%d\t%d\n",i,turnAround[i]-arrivalTime[i],waitingTime[i]);
-    }
-
-    timeQuantum = 9;
+    timeQuantum = 10;
     for(i=0;i<no_of_process;i++)
     {
         int x = queue[i];
@@ -89,11 +85,6 @@ void main()
             turnAround[x] = time;
         }
     }
-    printf("\n\nProcess\t|Turnaround Time|Waiting Time\n\n");
-    for(i=0;i<no_of_process;i++)
-    {
-        printf("P[%d]\t|\t%d\t%d\n",i,turnAround[i]-arrivalTime[i],waitingTime[i]);
-    }
 
     maintainingQueueRT();
 
@@ -103,7 +94,6 @@ void main()
 
         if(remainingBurstTime[k] != 0)
         {
-            printf("%d %d\n",k,time);
             waitingTime[k] += time - turnAround[k];
             time += remainingBurstTime[k];
             remainingBurstTime[k]=0;
